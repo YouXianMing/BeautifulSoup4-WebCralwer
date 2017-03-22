@@ -1,0 +1,62 @@
+img {
+    border-style: solid;
+    border-width: thin;
+    float: left;
+}
+
+.clear_me {
+    clear: left;
+}
+
+div.fatherbox {
+    width: 930px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+div.box {
+    float: left;
+    width: 310px;
+    height: 240px;
+}
+
+div.box>.child {
+    position: relative;
+    width: 290px;
+    height: 220px;
+    outline: dashed RGBA(242, 155, 39, 0.5) thin !important;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+div.fixedimage {
+    width: 290px;
+    height: 143px;
+    overflow: hidden;
+}
+
+div.fixedimage>img {
+    width: 100%;
+    border: medium none;
+}
+
+div[class="child"]>p[title="title"] {
+    padding: 9px 10px 0px 10px;
+    width: 270px;
+    height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: oblique;
+}
+
+div[class="child"]>p[title="subtitle"] {
+    padding: 5px 10px 0px 10px;
+    width: 270px;
+    height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 90%;
+    color: burlywood;
+}
