@@ -152,7 +152,6 @@ def cn_blog():
 
 # 时光网数据抓取
 def m_time():
-
     # 存储抓取的对象
     obj_list = []
 
@@ -202,7 +201,6 @@ def m_time():
     # 获取网页文本
     page_count = 0
     for tmp_url in url_list:
-
         page_count += 1
         web_text = Networking(tmp_url).get().response.text
         analysis_web_text(web_text, page_count)
@@ -251,4 +249,51 @@ def m_time():
         print("生成的网页在 %s ,直接打开即可." % File.path(suffix_path='mtime.html'))
 
 
-m_time()
+def git_hub():
+
+    # 获取网页文本
+    user_name = "YouXianMing"
+    page = "1"
+    url = "https://github.com/%s?language=&page=%s&q=&tab=repositories&type=source" % (user_name, page)
+    web_text = Networking(url).get().response.text
+
+    # 开始分析
+    if len(web_text):
+
+        # 初始化并查询固定的数据
+        soup_manager = BeautifulSoupManager(web_text)
+        for item in soup_manager.find_all('li', 'class = col-12'):
+
+            # 开始查找当前以下的一级子节点
+            count = 0
+            for data in item.contents:
+                if BeautifulSoupElement(data).is_Tag:
+                    if count == 0:
+
+                        print("网址: https://github.com" + data.h3.a['href'])
+                        print("名字: " + data.h3.a.string.strip())
+
+                    if count == 1:
+                        for temp in BeautifulSoupManager(str(data)).find_all('p', 'class = col-9'):
+                            print("描述: " + temp.string.strip())
+
+                    if count == 2:
+                        search_str = str(data)
+                        lan_type = RegExpString(search_str).search_with_pattern(r'(?<=programmingLanguage">).+?(?=</span)', re.I | re.M | re.S).search_result
+                        print("语言: " + lan_type.strip())
+                        lan_type = RegExpString(search_str).search_with_pattern(r'(?<=\d{2}:\d{2}:...">).+?(?=</relative-time)', re.I | re.M | re.S).search_result
+                        print("时间: " + lan_type.strip())
+
+                        for temp in BeautifulSoupManager(search_str).find_all('svg', 'aria-label = star'):
+                            print("星星: " + temp.next_sibling.strip())
+
+                        for temp in BeautifulSoupManager(search_str).find_all('svg', 'aria-label = fork'):
+                            print("分叉: " + temp.next_sibling.strip())
+
+                    count += 1
+
+            print()
+            print()
+
+
+git_hub()
